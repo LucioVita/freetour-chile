@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Chatbot from "@/components/Chatbot";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
@@ -38,11 +39,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${inter.variable} ${outfit.variable}`}>
-      <body className="antialiased min-h-screen flex flex-col bg-white">
+      <body className="antialiased min-h-screen flex flex-col bg-white overflow-x-hidden">
         <Navbar />
         <main className="flex-grow">
           {children}
         </main>
+        <Chatbot />
       </body>
     </html>
   );
