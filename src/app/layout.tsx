@@ -31,6 +31,8 @@ export const metadata: Metadata = {
   },
 };
 
+import Navbar from "@/components/Navbar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,28 +41,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} ${outfit.variable}`}>
       <body className="antialiased min-h-screen flex flex-col">
-        {/* Navigation */}
-        <header className="fixed top-0 w-full z-50 transition-all duration-300">
-          <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="glass rounded-2xl px-6 py-3 flex items-center justify-between shadow-lg">
-              <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                FWT Santiago
-              </Link>
-              <div className="hidden md:flex space-x-8">
-                <Link href="#tours" className="text-sm font-medium hover:text-accent transition-colors">Tours</Link>
-                <Link href="#nosotros" className="text-sm font-medium hover:text-accent transition-colors">Nosotros</Link>
-                <Link href="#faq" className="text-sm font-medium hover:text-accent transition-colors">FAQ</Link>
-              </div>
-              <Link 
-                href="#reservar" 
-                className="bg-primary text-white px-5 py-2 rounded-xl text-sm font-bold shadow-md hover:bg-opacity-90 transition-all"
-              >
-                Reservar Ahora
-              </Link>
-            </div>
-          </nav>
-        </header>
-
+        <Navbar />
         <main className="flex-grow">
           {children}
         </main>
@@ -96,7 +77,7 @@ export default function RootLayout({
         </footer>
 
         {/* WhatsApp Button */}
-        <a 
+        <a
           href="https://wa.me/569XXXXXXXX?text=Hola! Me gustaría reservar un tour."
           target="_blank"
           rel="noopener noreferrer"
