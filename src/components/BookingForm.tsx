@@ -1,17 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, Users, Loader2 } from "lucide-react";
+import { Mail, Users, Loader2, CheckCircle2 } from "lucide-react";
 import { sendToN8n } from "@/app/actions";
-
-const CARLOS_PHONE = "56983072325"; // Número real de Carlos
 
 export default function BookingForm() {
     const [loading, setLoading] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
     const [formData, setFormData] = useState({
         tour: "Santiago Essentials (Free Tour)",
         nombre: "",
-        whatsapp: "",
+        email: "",
         fecha: "",
         personas: "1",
     });
@@ -21,23 +20,39 @@ export default function BookingForm() {
         setLoading(true);
 
         // Usamos la Server Action para evitar errores de CORS
-        await sendToN8n({
+        const result = await sendToN8n({
             ...formData,
             fuente: "Sitio Web Oficial"
         });
 
-        const message = `Hola Carlos! Quiero reservar:
-📍 Tour: ${formData.tour}
-👤 Nombre: ${formData.nombre}
-📅 Fecha: ${formData.fecha}
-👥 Personas: ${formData.personas}
-📱 WhatsApp: ${formData.whatsapp}
-Espero confirmación!`;
+        if (result.success) {
+            setSubmitted(true);
+        } else {
+            alert("Hubo un error al procesar tu reserva. Por favor intenta nuevamente.");
+        }
 
-        const whatsappUrl = `https://wa.me/${CARLOS_PHONE}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, "_blank");
         setLoading(false);
     };
+
+    if (submitted) {
+        return (
+            <div className="flex flex-col items-center justify-center p-12 text-center animate-in fade-in zoom-in duration-500">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                    <CheckCircle2 className="text-green-600" size={40} />
+                </div>
+                <h3 className="text-2xl font-black text-primary mb-4 uppercase">¡RESERVA ENVIADA!</h3>
+                <p className="text-slate-600 font-bold mb-8 leading-relaxed">
+                    Hemos recibido tus datos. Te enviaremos un correo de confirmación a <span className="text-primary">{formData.email}</span> muy pronto.
+                </p>
+                <button
+                    onClick={() => setSubmitted(false)}
+                    className="text-xs font-black text-slate-400 uppercase tracking-widest hover:text-primary transition-colors"
+                >
+                    Hacer otra reserva
+                </button>
+            </div>
+        );
+    }
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 p-2 text-left">
@@ -71,14 +86,14 @@ Espero confirmación!`;
                         />
                     </div>
                     <div>
-                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">WhatsApp</label>
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">Email de contacto</label>
                         <input
-                            type="tel"
-                            placeholder="+56 9..."
+                            type="email"
+                            placeholder="tu@email.com"
                             required
                             className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-primary focus:ring-2 focus:ring-accent outline-none"
-                            value={formData.whatsapp}
-                            onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             disabled={loading}
                         />
                     </div>
@@ -124,14 +139,14 @@ Espero confirmación!`;
                     <Loader2 className="animate-spin text-primary" size={24} />
                 ) : (
                     <>
-                        <MessageCircle className="group-hover:scale-110 transition-transform" />
-                        RESERVAR POR WHATSAPP
+                        <Mail className="group-hover:scale-110 transition-transform" />
+                        RESERVAR
                     </>
                 )}
             </button>
 
             <p className="text-[10px] text-center font-bold text-slate-400 uppercase tracking-tighter">
-                {loading ? "Procesando reserva..." : "Confirmación inmediata • Sin tarjetas"}
+                {loading ? "Procesando reserva..." : "Confirmación rápida • Sin tarjetas"}
             </p>
         </form>
     );

@@ -5,7 +5,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BookingForm from "@/components/BookingForm";
-import { Star, ShieldCheck, Map, Users, Award, CheckCircle2, ArrowRight, MapPin, MessageCircle } from "lucide-react";
+import { Star, ShieldCheck, Map, Users, Award, CheckCircle2, ArrowRight, MapPin, Mail } from "lucide-react";
 import { motion } from "framer-motion";
 
 const tours = [
@@ -166,7 +166,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-7xl font-black font-outfit mb-6 uppercase tracking-tighter">RESERVA <br /> <span className="text-accent underline decoration-accent/20 decoration-[10px]">DIRECTO</span></h2>
-            <p className="text-blue-100 text-xl font-bold">Sin intermediarios. Sin pagos previos. Confirmación vía WhatsApp.</p>
+            <p className="text-blue-100 text-xl font-bold">Sin intermediarios. Sin pagos previos. Confirmación vía Email.</p>
           </div>
           <div className="bg-white p-2 rounded-[2.5rem] shadow-2xl">
             <BookingForm />
@@ -232,7 +232,7 @@ export default function Home() {
                   <MapPin size={18} className="text-accent" /> Plaza de Armas, Santiago
                 </li>
                 <li className="flex items-center gap-3 font-bold text-white">
-                  <MessageCircle size={18} className="text-accent" /> +56 9 8307 2325
+                  <Mail size={18} className="text-accent" /> contacto@freewalkingtoursantiago.cl
                 </li>
               </ul>
             </div>
