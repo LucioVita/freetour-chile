@@ -119,19 +119,26 @@ export default function Chatbot() {
             // Attempt to extract response string from data
             let botContent = '';
 
-            if (typeof data === 'string') {
-                botContent = data;
-            } else if (Array.isArray(data) && data.length > 0) {
+            // Handle n8n response format: [{ "output": "text" }]
+            if (Array.isArray(data) && data.length > 0) {
                 const firstItem = data[0];
-                botContent = typeof firstItem === 'string'
-                    ? firstItem
-                    : (firstItem.output || firstItem.response || firstItem.message || '');
+                if (typeof firstItem === 'object' && firstItem !== null && 'output' in firstItem) {
+                    botContent = firstItem.output;
+                } else if (typeof firstItem === 'string') {
+                    botContent = firstItem;
+                } else {
+                    // Fallback for other formats
+                    botContent = firstItem.output || firstItem.response || firstItem.message || JSON.stringify(firstItem);
+                }
+            } else if (typeof data === 'string') {
+                botContent = data;
             } else if (data && typeof data === 'object') {
-                botContent = (data as any).output || (data as any).response || (data as any).message || '';
+                // Fallback for single object response
+                botContent = (data as any).output || (data as any).text || (data as any).response || (data as any).message || (data as any).error || '';
             }
 
             if (!botContent || botContent === 'Workflow was started') {
-                console.warn("n8n returned empty or default content:", botContent);
+                console.warn("n8n returned empty or default content:", JSON.stringify(data));
                 botContent = 'Lo siento, estoy teniendo problemas para procesar tu mensaje. ¿Podrías intentar de nuevo?';
             }
 
@@ -229,6 +236,9 @@ export default function Chatbot() {
                                 </div>
                             )}
                             <div ref={messagesEndRef} />
+                            <div className="text-[9px] text-gray-300 text-center mt-2 font-mono">
+                                Session: {sessionId}
+                            </div>
                         </div>
 
                         {/* Input */}
