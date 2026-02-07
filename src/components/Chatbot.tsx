@@ -29,7 +29,18 @@ export default function Chatbot() {
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [sessionId, setSessionId] = useState<string>('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // Initialize sessionId from localStorage or generate a new one
+    useEffect(() => {
+        let storedId = localStorage.getItem('chatbot_session_id');
+        if (!storedId) {
+            storedId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('chatbot_session_id', storedId);
+        }
+        setSessionId(storedId);
+    }, []);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -66,18 +77,27 @@ export default function Chatbot() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: userMessage.content }),
+                body: JSON.stringify({
+                    message: userMessage.content,
+                    sessionId: sessionId
+                }),
             });
 
             if (!response.ok) {
                 throw new Error('Failed to get response from Pati');
             }
 
-            const data = await response.json();
+            let data;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = await response.text();
+            }
 
             // Attempt to extract response string from data
             // Typical n8n responses might be { output: "text" } or [ { output: "text" } ]
-            let botContent = 'Lo siento, no pude procesar tu solicitud.';
+            let botContent = '';
 
             if (typeof data === 'string') {
                 botContent = data;
@@ -85,9 +105,14 @@ export default function Chatbot() {
                 const firstItem = data[0];
                 botContent = typeof firstItem === 'string'
                     ? firstItem
-                    : (firstItem.output || firstItem.response || firstItem.message || botContent);
+                    : (firstItem.output || firstItem.response || firstItem.message || '');
             } else if (data && typeof data === 'object') {
-                botContent = data.output || data.response || data.message || botContent;
+                botContent = (data as any).output || (data as any).response || (data as any).message || '';
+            }
+
+            // Si n8n devuelve el mensaje por defecto o está vacío
+            if (!botContent || botContent === 'Workflow was started') {
+                botContent = 'Lo siento, estoy teniendo problemas para procesar tu mensaje. ¿Podrías intentar de nuevo?';
             }
 
             const botMessage: Message = {
