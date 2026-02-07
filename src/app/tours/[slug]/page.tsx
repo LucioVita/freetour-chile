@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BookingForm from "@/components/BookingForm";
-import { Clock, MapPin, Users, Star, ChevronLeft, Shield, Globe2, CircleDollarSign, Info } from "lucide-react";
+import { Clock, MapPin, Users, Star, ChevronLeft, Shield, Globe2, CircleDollarSign, Info, Bot } from "lucide-react";
 
 const toursData: Record<string, any> = {
     "free-tour-santiago-imprescindible": {
@@ -193,9 +193,15 @@ export default async function TourPage({ params }: { params: Promise<{ slug: str
                                             <Clock size={32} />
                                         </div>
                                         <h4 className="text-2xl font-black font-outfit text-primary mb-4 uppercase">NO DISPONIBLE</h4>
-                                        <p className="text-slate-500 font-medium leading-relaxed">
+                                        <p className="text-slate-500 font-medium leading-relaxed mb-6">
                                             Carlos no está realizando este tour en este momento. Vuelve pronto para nuevas fechas.
                                         </p>
+                                        <button
+                                            onClick={() => window.dispatchEvent(new CustomEvent('open-chatbot'))}
+                                            className="w-full py-4 bg-primary/5 border border-primary/10 rounded-2xl font-black text-primary hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <Bot size={20} /> PREGUNTAR A PATI (IA)
+                                        </button>
                                     </div>
                                 )}
 

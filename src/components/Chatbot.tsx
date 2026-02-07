@@ -39,6 +39,12 @@ export default function Chatbot() {
         scrollToBottom();
     }, [messages]);
 
+    useEffect(() => {
+        const handleOpenChat = () => setIsOpen(true);
+        window.addEventListener('open-chatbot', handleOpenChat);
+        return () => window.removeEventListener('open-chatbot', handleOpenChat);
+    }, []);
+
     const handleSendMessage = async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
         if (!inputValue.trim() || isLoading) return;
