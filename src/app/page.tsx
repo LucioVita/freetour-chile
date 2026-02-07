@@ -7,8 +7,9 @@ import Link from "next/link";
 import BookingForm from "@/components/BookingForm";
 import { Star, ShieldCheck, Map, Users, Award, CheckCircle2, ArrowRight, MapPin, Mail, Phone } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-const tours = [
+const initialTours = [
   {
     id: "essentials",
     active: true,
@@ -60,6 +61,23 @@ const tours = [
 ];
 
 export default function Home() {
+  const [tours, setTours] = useState(initialTours);
+
+  useEffect(() => {
+    fetch('/api/webhook/tour-status')
+      .then(res => res.json())
+      .then(statusData => {
+        if (Object.keys(statusData).length > 0) {
+          const updatedTours = initialTours.map(tour => ({
+            ...tour,
+            active: statusData[tour.slug] ?? tour.active
+          }));
+          setTours(updatedTours);
+        }
+      })
+      .catch(err => console.error("Error fetching tour status:", err));
+  }, []);
+
   const activeTours = tours.filter(t => t.active);
 
   return (

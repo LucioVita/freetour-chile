@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import BookingForm from "@/components/BookingForm";
 import { Clock, MapPin, Users, Star, ChevronLeft, Shield, Globe2, CircleDollarSign, Info, Bot } from "lucide-react";
 
+import fs from "fs";
+import path from "path";
+
 const toursData: Record<string, any> = {
     "free-tour-santiago-imprescindible": {
         active: true,
@@ -72,11 +75,29 @@ toursData["tour-memoria-historica-dictadura"] = toursData["tour-dictadura-chile-
 toursData["tour-gastronomico-mercado-la-vega"] = toursData["tour-mut-santiago-urbano"];
 toursData["tour-gastronomico-mercados-santiago"] = toursData["tour-mut-santiago-urbano"];
 
+function getTourStatus(slug: string): boolean {
+    try {
+        const filePath = path.join(process.cwd(), 'src', 'data', 'tours-status.json');
+        if (fs.existsSync(filePath)) {
+            const fileContent = fs.readFileSync(filePath, 'utf8');
+            const statusData = JSON.parse(fileContent);
+            return statusData[slug] ?? toursData[slug]?.active ?? false;
+        }
+    } catch (e) {
+        console.error("Error reading tour status:", e);
+    }
+    return toursData[slug]?.active ?? false;
+}
+
 export default async function TourPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const tour = toursData[slug];
+    const baseTour = toursData[slug];
 
-    if (!tour) notFound();
+    if (!baseTour) notFound();
+
+    // Merge status from JSON
+    const tourStatus = getTourStatus(slug);
+    const tour = { ...baseTour, active: tourStatus };
 
     const jsonLd = {
         "@context": "https://schema.org",
