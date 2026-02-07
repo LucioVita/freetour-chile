@@ -21,7 +21,7 @@ const toursData: Record<string, any> = {
         reviewsCount: 2540
     },
     "tour-mut-santiago-urbano": {
-        active: true,
+        active: false,
         title: "MUT Santiago Urbano",
         tagline: "El nuevo corazón de la ciudad",
         description: "Explora MUT, el primer mercado urbano sustentable de Chile. Una joya de arquitectura, diseño y gastronomía que está revolucionando Santiago.",
@@ -36,7 +36,7 @@ const toursData: Record<string, any> = {
         reviewsCount: 450
     },
     "tour-dictadura-chile-1973": {
-        active: true,
+        active: false,
         title: "Memoria Histórica 1973",
         tagline: "Dictadura y Resiliencia",
         description: "Un recorrido honesto y necesario sobre el golpe del 11 de septiembre de 1973. Historia contemporánea con rigor y respeto.",
@@ -51,7 +51,7 @@ const toursData: Record<string, any> = {
         reviewsCount: 1890
     },
     "tour-barrio-yungay-arte-urbano": {
-        active: true,
+        active: false,
         title: "Street Art Barrio Yungay",
         tagline: "Patrimonio y Bohemia",
         description: "Explora el barrio más cool de Santiago según Time Out. Muralismo, arquitectura patrimonial y la energía de la 'nueva bohemia'.",

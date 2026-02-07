@@ -32,14 +32,24 @@ export default function Chatbot() {
     const [sessionId, setSessionId] = useState<string>('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // Initialize sessionId from localStorage or generate a new one
-    useEffect(() => {
+    // Initialize sessionId securely
+    const getSessionId = () => {
+        if (typeof window === 'undefined') return '';
         let storedId = localStorage.getItem('chat_session_id');
         if (!storedId) {
-            storedId = crypto.randomUUID();
+            // Robust UUID generation with fallback
+            if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                storedId = crypto.randomUUID();
+            } else {
+                storedId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            }
             localStorage.setItem('chat_session_id', storedId);
         }
-        setSessionId(storedId);
+        return storedId;
+    };
+
+    useEffect(() => {
+        setSessionId(getSessionId());
     }, []);
 
     const scrollToBottom = () => {
@@ -60,6 +70,9 @@ export default function Chatbot() {
         if (e) e.preventDefault();
         if (!inputValue.trim() || isLoading) return;
 
+        const currentSessionId = getSessionId();
+        console.log('Sending message to n8n:', { message: inputValue, sessionId: currentSessionId });
+
         const userMessage: Message = {
             id: Date.now().toString(),
             role: 'user',
@@ -79,19 +92,18 @@ export default function Chatbot() {
                 },
                 body: JSON.stringify({
                     message: userMessage.content,
-                    sessionId: sessionId
+                    sessionId: currentSessionId
                 }),
             });
 
             if (!response.ok) {
-                throw new Error('Failed to get response from Pati');
+                throw new Error(`Failed to get response from Pati: ${response.status}`);
             }
 
             let data;
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 try {
-                    // Clone response to try reading as JSON first without consuming the original stream
                     const responseClone = response.clone();
                     data = await responseClone.json();
                 } catch (e) {
@@ -102,8 +114,9 @@ export default function Chatbot() {
                 data = await response.text();
             }
 
+            console.log("n8n Raw Response:", data);
+
             // Attempt to extract response string from data
-            // Typical n8n responses might be { output: "text" } or [ { output: "text" } ]
             let botContent = '';
 
             if (typeof data === 'string') {
@@ -116,9 +129,6 @@ export default function Chatbot() {
             } else if (data && typeof data === 'object') {
                 botContent = (data as any).output || (data as any).response || (data as any).message || '';
             }
-
-            // Si n8n devuelve el mensaje por defecto o está vacío
-            console.log("n8n Raw Response:", data);
 
             if (!botContent || botContent === 'Workflow was started') {
                 console.warn("n8n returned empty or default content:", botContent);

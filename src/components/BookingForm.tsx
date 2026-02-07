@@ -12,6 +12,7 @@ export default function BookingForm() {
         nombre: "",
         email: "",
         fecha: "",
+        hora: "11:00",
         personas: "1",
     });
 
@@ -65,10 +66,10 @@ export default function BookingForm() {
                         onChange={(e) => setFormData({ ...formData, tour: e.target.value })}
                         disabled={loading}
                     >
-                        <option>Santiago Essentials (Free Tour)</option>
-                        <option>MUT Santiago Urbano</option>
-                        <option>Tour Dictadura Chile 1973</option>
-                        <option>Street Art Barrio Yungay</option>
+                        <option value="Santiago Essentials (Free Tour)">Santiago Essentials (Free Tour)</option>
+                        <option value="MUT Santiago Urbano" disabled>MUT Santiago Urbano - PRÓXIMAMENTE</option>
+                        <option value="Tour Dictadura Chile 1973" disabled>Tour Dictadura Chile 1973 - PRÓXIMAMENTE</option>
+                        <option value="Street Art Barrio Yungay" disabled>Street Art Barrio Yungay - PRÓXIMAMENTE</option>
                     </select>
                 </div>
 
@@ -112,19 +113,38 @@ export default function BookingForm() {
                         />
                     </div>
                     <div>
-                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">¿Cuántos son?</label>
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">Hora de inicio</label>
                         <div className="relative">
-                            <input
-                                type="number"
-                                min="1"
+                            <select
                                 required
-                                className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-primary focus:ring-2 focus:ring-accent outline-none"
-                                value={formData.personas}
-                                onChange={(e) => setFormData({ ...formData, personas: e.target.value })}
+                                className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-primary focus:ring-2 focus:ring-accent outline-none appearance-none cursor-pointer"
+                                value={formData.hora}
+                                onChange={(e) => setFormData({ ...formData, hora: e.target.value })}
                                 disabled={loading}
-                            />
-                            <Users className="absolute right-4 top-4 text-slate-300" size={20} />
+                            >
+                                <option value="11:00">11:00 AM</option>
+                                <option value="15:00">15:00 PM</option>
+                            </select>
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><path d="m6 9 6 6 6-6" /></svg>
+                            </div>
                         </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">¿Cuántos son?</label>
+                    <div className="relative">
+                        <input
+                            type="number"
+                            min="1"
+                            required
+                            className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-primary focus:ring-2 focus:ring-accent outline-none"
+                            value={formData.personas}
+                            onChange={(e) => setFormData({ ...formData, personas: e.target.value })}
+                            disabled={loading}
+                        />
+                        <Users className="absolute right-4 top-4 text-slate-300" size={20} />
                     </div>
                 </div>
             </div>
