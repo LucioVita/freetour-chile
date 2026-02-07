@@ -118,7 +118,10 @@ export default function Chatbot() {
             }
 
             // Si n8n devuelve el mensaje por defecto o está vacío
+            console.log("n8n Raw Response:", data);
+
             if (!botContent || botContent === 'Workflow was started') {
+                console.warn("n8n returned empty or default content:", botContent);
                 botContent = 'Lo siento, estoy teniendo problemas para procesar tu mensaje. ¿Podrías intentar de nuevo?';
             }
 
