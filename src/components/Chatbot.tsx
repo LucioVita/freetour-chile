@@ -76,10 +76,19 @@ export default function Chatbot() {
             const data = await response.json();
 
             // Attempt to extract response string from data
-            // Typical n8n responses might be { output: "text" } or just a string or { response: "text" }
-            const botContent = typeof data === 'string'
-                ? data
-                : (data.output || data.response || data.message || 'Lo siento, no pude procesar tu solicitud.');
+            // Typical n8n responses might be { output: "text" } or [ { output: "text" } ]
+            let botContent = 'Lo siento, no pude procesar tu solicitud.';
+
+            if (typeof data === 'string') {
+                botContent = data;
+            } else if (Array.isArray(data) && data.length > 0) {
+                const firstItem = data[0];
+                botContent = typeof firstItem === 'string'
+                    ? firstItem
+                    : (firstItem.output || firstItem.response || firstItem.message || botContent);
+            } else if (data && typeof data === 'object') {
+                botContent = data.output || data.response || data.message || botContent;
+            }
 
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
