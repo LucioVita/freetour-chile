@@ -44,7 +44,7 @@ export default function RootLayout({
         <main className="flex-grow">
           {children}
         </main>
-        <Chatbot />
+        {/* <Chatbot /> */}
       </body>
     </html>
   );

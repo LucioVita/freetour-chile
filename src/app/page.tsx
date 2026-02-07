@@ -5,7 +5,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BookingForm from "@/components/BookingForm";
-import { Star, ShieldCheck, Map, Users, Award, CheckCircle2, ArrowRight, MapPin, Mail } from "lucide-react";
+import { Star, ShieldCheck, Map, Users, Award, CheckCircle2, ArrowRight, MapPin, Mail, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 
 const tours = [
@@ -261,6 +261,12 @@ export default function Home() {
                 </li>
                 <li className="flex items-center gap-3 font-bold text-white">
                   <Mail size={18} className="text-accent" /> contacto@freewalkingtoursantiago.cl
+                </li>
+                <li className="flex items-center gap-3 font-bold text-white">
+                  <Phone size={18} className="text-accent" />
+                  <Link href="https://wa.me/56983072325" target="_blank" className="hover:text-accent transition-colors">
+                    +56 9 8307 2325
+                  </Link>
                 </li>
               </ul>
             </div>
