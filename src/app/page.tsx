@@ -83,7 +83,7 @@ export default function Home() {
               <span className="text-accent underline decoration-accent/20 decoration-[12px] underline-offset-4">SANTIAGO</span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-600 mb-12 max-w-2xl mx-auto font-semibold leading-relaxed">
-              Descubre la ciudad con **Carlos**, el guía mejor valorado. Sin intermediarios, sin grupos masivos. Solo historias reales.
+              Descubre la ciudad con <span className="text-primary font-black">Carlos</span>, el guía mejor valorado. Sin intermediarios, sin grupos masivos. Solo historias reales.
             </p>
             <div className="flex flex-col sm:flex-row gap-5 justify-center">
               <Link href="#tours" className="bg-primary text-white px-10 py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-primary-dark transition-all flex items-center justify-center gap-2">
@@ -190,7 +190,7 @@ export default function Home() {
           <div className="text-left text-left">
             <h2 className="text-4xl md:text-5xl font-black font-outfit mb-8 text-primary uppercase leading-tight">Camina con el <br /> <span className="text-accent underline decoration-accent/20 decoration-[8px]">Experto Local</span></h2>
             <p className="text-xl text-slate-600 leading-relaxed mb-8 font-medium">
-              Hola, soy **Carlos**. He guiado a más de 15.000 personas por estas calles. Este sitio es mi casa digital para ofrecerte tours directos, honestos y sin comisiones de plataformas externas.
+              Hola, soy <span className="text-primary font-black">Carlos</span>. He guiado a más de 15.000 personas por estas calles. Este sitio es mi casa digital para ofrecerte tours directos, honestos y sin comisiones de plataformas externas.
             </p>
             <ul className="space-y-4 mb-10">
               <li className="flex items-center gap-3 font-bold text-slate-700">
