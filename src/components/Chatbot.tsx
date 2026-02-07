@@ -90,7 +90,12 @@ export default function Chatbot() {
             let data;
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
-                data = await response.json();
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    console.warn('Failed to parse JSON response, falling back to text:', e);
+                    data = await response.text();
+                }
             } else {
                 data = await response.text();
             }
