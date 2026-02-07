@@ -91,7 +91,9 @@ export default function Chatbot() {
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 try {
-                    data = await response.json();
+                    // Clone response to try reading as JSON first without consuming the original stream
+                    const responseClone = response.clone();
+                    data = await responseClone.json();
                 } catch (e) {
                     console.warn('Failed to parse JSON response, falling back to text:', e);
                     data = await response.text();
