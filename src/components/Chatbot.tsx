@@ -34,10 +34,10 @@ export default function Chatbot() {
 
     // Initialize sessionId from localStorage or generate a new one
     useEffect(() => {
-        let storedId = localStorage.getItem('chatbot_session_id');
+        let storedId = localStorage.getItem('chat_session_id');
         if (!storedId) {
-            storedId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            localStorage.setItem('chatbot_session_id', storedId);
+            storedId = crypto.randomUUID();
+            localStorage.setItem('chat_session_id', storedId);
         }
         setSessionId(storedId);
     }, []);
