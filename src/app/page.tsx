@@ -64,9 +64,18 @@ export default function Home() {
   const [tours, setTours] = useState(initialTours);
 
   useEffect(() => {
-    fetch('/api/webhook/tour-status')
+    // URL de la API - usa Hostinger en producción o API local en desarrollo
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+      ? `${process.env.NEXT_PUBLIC_API_URL}/tour-status.php`
+      : '/api/webhook/tour-status';
+
+    fetch(apiUrl)
       .then(res => res.json())
-      .then(statusData => {
+      .then(response => {
+        // La API de Hostinger devuelve { success: true, data: {...} }
+        // La API local devuelve directamente {...}
+        const statusData = response.data || response;
+
         if (Object.keys(statusData).length > 0) {
           const updatedTours = initialTours.map(tour => ({
             ...tour,

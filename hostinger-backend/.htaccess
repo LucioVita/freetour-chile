@@ -1,0 +1,20 @@
+# Configuración para Hostinger
+# Habilitar rewrite engine
+RewriteEngine On
+
+# Permitir CORS
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type"
+
+# Proteger el directorio de datos
+<Files "data/*">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Permitir acceso solo a archivos PHP en /api
+<FilesMatch "\.(php)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
