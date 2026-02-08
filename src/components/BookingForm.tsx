@@ -108,7 +108,15 @@ export default function BookingForm() {
                             required
                             className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-primary focus:ring-2 focus:ring-accent outline-none"
                             value={formData.fecha}
-                            onChange={(e) => setFormData({ ...formData, fecha: e.target.value })}
+                            onChange={(e) => {
+                                const newFecha = e.target.value;
+                                const isSunday = new Date(newFecha + "T12:00:00").getDay() === 0;
+                                setFormData({
+                                    ...formData,
+                                    fecha: newFecha,
+                                    hora: isSunday ? "11:00" : formData.hora
+                                });
+                            }}
                             disabled={loading}
                         />
                     </div>
@@ -123,7 +131,9 @@ export default function BookingForm() {
                                 disabled={loading}
                             >
                                 <option value="11:00">11:00 AM</option>
-                                <option value="15:00">15:00 PM</option>
+                                {formData.fecha && new Date(formData.fecha + "T12:00:00").getDay() !== 0 && (
+                                    <option value="15:00">15:00 PM</option>
+                                )}
                             </select>
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><path d="m6 9 6 6 6-6" /></svg>
