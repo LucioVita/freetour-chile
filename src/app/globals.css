@@ -1,6 +1,10 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
   --color-primary: #1e3a8a;
   --color-primary-dark: #172554;
   --color-accent: #ea580c;
@@ -8,16 +12,6 @@
   --color-success: #16a34a;
   --color-border: #e2e8f0;
   --color-background: #ffffff;
-
-  --font-outfit: var(--font-outfit);
-  --font-inter: var(--font-inter);
-
-  --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
-}
-
-:root {
-  --background: #ffffff;
-  --foreground: #0f172a;
 }
 
 /* Forzamos modo claro para legibilidad en exteriores */
