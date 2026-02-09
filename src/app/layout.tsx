@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://freewalkingtoursantiago.cl'),
   title: {
     default: "Free Walking Tour Santiago | El Mejor Tour Local en Chile",
     template: "%s | Free Walking Tour Santiago"
@@ -22,6 +23,23 @@ export const metadata: Metadata = {
     siteName: "Free Walking Tour Santiago",
     locale: "es_CL",
     type: "website",
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Carlos - Guía Local Free Walking Tour Santiago',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Free Walking Tour Santiago | Experiencias Locales Auténticas",
+    description: "Únete al tour mejor valorado de Santiago. Sin intermediarios, directo con guías locales.",
+    images: ['/og-image.png'],
+  },
+  verification: {
+    google: "FfG63kM4LTy1RjUoUAPfc8CubBcFrFMb7QqjYMh7aU4",
   },
   robots: {
     index: true,
